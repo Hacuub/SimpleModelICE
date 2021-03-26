@@ -286,7 +286,20 @@ const searchNameDog = (req, res) => {
       return res.json({ error: 'No dogs found' });
     }
 
-    return res.json({ name: doc.name, breed: doc.breed, age: doc.age });
+    lastAddedDog = doc;
+
+    lastAddedDog.age++;
+
+    const savePromise = lastAddedDog.save();
+    savePromise.then(() => res.json({
+      name: lastAddedDog.name,
+      breed: lastAddedDog.breed,
+      age: lastAddedDog.age,
+    }));
+    savePromise.catch((err) => res.status(500).json({ err }));
+
+
+    return res;
   });
 };
 
@@ -316,18 +329,6 @@ const updateLast = (req, res) => {
   savePromise.catch((err) => res.status(500).json({ err }));
 };
 
-const updateLastDog = (req, res) => {
-  lastAddedDog.age++;
-
-  const savePromise = lastAddedDog.save();
-  savePromise.then(() => res.json({
-    name: lastAddedDog.name,
-    beds: lastAddedDog.breed,
-    age: lastAddedDog.age,
-  }));
-
-  savePromise.catch((err) => res.status(500).json({ err }));
-};
 
 // function to handle a request to any non-real resources (404)
 // controller functions in Express receive the full HTTP request
@@ -358,7 +359,6 @@ module.exports = {
   setName,
   setNameDog,
   updateLast,
-  updateLastDog,
   searchName,
   searchNameDog,
   notFound,
