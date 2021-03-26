@@ -296,8 +296,7 @@ const searchNameDog = (req, res) => {
       breed: lastAddedDog.breed,
       age: lastAddedDog.age,
     }));
-    savePromise.catch((err) => res.status(500).json({ err }));
-
+    savePromise.catch((err1) => res.status(500).json({ err1 }));
 
     return res;
   });
@@ -328,7 +327,6 @@ const updateLast = (req, res) => {
   // if save error, just return an error for now
   savePromise.catch((err) => res.status(500).json({ err }));
 };
-
 
 // function to handle a request to any non-real resources (404)
 // controller functions in Express receive the full HTTP request
